@@ -23,6 +23,8 @@ spawn_children(N, Acc) ->
             spawn_children(N-1, [Child|Acc])
     end.
 
+spawn_children(N) -> spawn_children(N, []).
+
 ping_each(Procs, M, Msg) ->
     if
         M < 0 -> error;
@@ -41,7 +43,7 @@ ping_each(Procs, M, Msg) ->
     end.
 
 go(N, M, Msg) ->
-    Children = spawn_children(N, []),
+    Children = spawn_children(N),
     ping_each(Children, M, Msg),
     lists:foreach(
         fun(Proc) -> Proc ! stop end,
